@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author Nguyen Son
+ * @author Dieu Huong
  */
 public class ThreadLogin extends Thread {
 

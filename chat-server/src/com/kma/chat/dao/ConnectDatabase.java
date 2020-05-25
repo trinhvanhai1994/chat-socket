@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 
 /**
  *
- * @author Nguyen Son
+ * @author Dieu Huong
  */
 public class ConnectDatabase {
      public static Connection connect(){

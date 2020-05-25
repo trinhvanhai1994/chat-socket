@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * @author Nguyen Son
+ * @author Dieu Huong
  */
 public class Authentication {
     public int checkLogin(String username, String password) {

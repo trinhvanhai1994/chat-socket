@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Nguyen Son
+ * @author Dieu Huong
  */
 public class UserInfo {
     private final Connection con = ConnectDatabase.connect();
