@@ -348,27 +348,26 @@ public class Registration extends JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (checkInput()) {
-            try {
-                Date dayOfBirthInput = DateUtils.convertStringToDate(dayOfBirth.getText());
-                String genderInput = male.isSelected() ? "Male" : "Female";
-                int phoneInput = Integer.parseInt(phone.getText());
-                String passwordInput = String.valueOf(password.getPassword());
-                String usernameInput = username.getText();
-                String nameInput = name.getText();
+        try {
+            if (!checkInput()) return;
+            Date dayOfBirthInput = DateUtils.convertStringToDate(dayOfBirth.getText());
+            String genderInput = male.isSelected() ? "Male" : "Female";
+            int phoneInput = Integer.parseInt(phone.getText());
+            String passwordInput = String.valueOf(password.getPassword());
+            String usernameInput = username.getText();
+            String nameInput = name.getText();
 
-                User user = new User(usernameInput, passwordInput, nameInput, genderInput, phoneInput, dayOfBirthInput);
-                new UserDAO().Registration(user);
-                JOptionPane.showMessageDialog(rootPane, "Tạo Thành Công Về Đăng Nhập");
-                LoginChat login = new LoginChat();
-                login.setVisible(true);
-                login.pack();
-                login.setLocationRelativeTo(null);
-                login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                this.dispose();
-            } catch (Exception ex) {
-                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            User user = new User(usernameInput, passwordInput, nameInput, genderInput, phoneInput, dayOfBirthInput);
+            new UserDAO().Registration(user);
+            JOptionPane.showMessageDialog(rootPane, "Tạo Thành Công Về Đăng Nhập");
+            LoginChat login = new LoginChat();
+            login.setVisible(true);
+            login.pack();
+            login.setLocationRelativeTo(null);
+            login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

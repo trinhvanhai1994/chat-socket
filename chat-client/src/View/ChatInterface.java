@@ -27,7 +27,6 @@ import javax.swing.JTextField;
  * @author Dieu Huong
  */
 public class ChatInterface extends JFrame {
-
     private Socket socket;
     private DataInputStream dis = null;
     private DataOutputStream dos = null;
@@ -56,7 +55,7 @@ public class ChatInterface extends JFrame {
             String username = user.getUsername();
             listBan.addElement(username);
         }
-        listBanBe.setModel(listBan);
+        listFriends.setModel(listBan);
     }
 
     public void ExitChat() {
@@ -80,26 +79,25 @@ public class ChatInterface extends JFrame {
         });
     }
 
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtHienThi = new javax.swing.JTextArea();
+        displayMessage = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtTen = new javax.swing.JLabel();
-        txtBanBe = new javax.swing.JTabbedPane();
+        username = new javax.swing.JLabel();
+        friend = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        listOnline = new javax.swing.JList<>();
+        listFriendOnlines = new javax.swing.JList<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listBanBe = new javax.swing.JList<>();
-        txtNhanTin = new JTextField();
+        listFriends = new javax.swing.JList<>();
+        message = new JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -107,11 +105,11 @@ public class ChatInterface extends JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 204));
 
-        txtHienThi.setEditable(false);
-        txtHienThi.setBackground(new java.awt.Color(204, 255, 255));
-        txtHienThi.setColumns(20);
-        txtHienThi.setRows(5);
-        jScrollPane1.setViewportView(txtHienThi);
+        displayMessage.setEditable(false);
+        displayMessage.setBackground(new java.awt.Color(204, 255, 255));
+        displayMessage.setColumns(20);
+        displayMessage.setRows(5);
+        jScrollPane1.setViewportView(displayMessage);
 
         jPanel2.setBackground(new java.awt.Color(204, 255, 204));
 
@@ -121,11 +119,11 @@ public class ChatInterface extends JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/user2.png"))); // NOI18N
 
-        txtTen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        username.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jScrollPane3.setViewportView(listOnline);
+        jScrollPane3.setViewportView(listFriendOnlines);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -140,11 +138,11 @@ public class ChatInterface extends JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        txtBanBe.addTab("Online", jPanel3);
+        friend.addTab("Online", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jScrollPane2.setViewportView(listBanBe);
+        jScrollPane2.setViewportView(listFriends);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -157,7 +155,7 @@ public class ChatInterface extends JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
         );
 
-        txtBanBe.addTab("DS Bạn Bè", jPanel4);
+        friend.addTab("DS Bạn Bè", jPanel4);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,13 +164,13 @@ public class ChatInterface extends JFrame {
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtBanBe)
+                                        .addComponent(friend)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel1)
-                                                        .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(126, 126, 126))
         );
         jPanel2Layout.setVerticalGroup(
@@ -183,12 +181,12 @@ public class ChatInterface extends JFrame {
                                                 .addGap(21, 21, 21)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addContainerGap()
                                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBanBe, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(friend, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
@@ -222,7 +220,7 @@ public class ChatInterface extends JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(txtNhanTin, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButton1)))
                                 .addGap(18, 18, 18))
@@ -240,7 +238,7 @@ public class ChatInterface extends JFrame {
                                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(31, 31, 31)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(txtNhanTin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -260,26 +258,25 @@ public class ChatInterface extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!"".equals(txtNhanTin.getText())) {
+        if (!"".equals(message.getText())) {
             try {
                 dos = new DataOutputStream(socket.getOutputStream());
-                dos.writeUTF("TinNhan|" + name + " : " + txtNhanTin.getText());
+                dos.writeUTF("TinNhan|" + name + " : " + message.getText());
                 dos.flush();
             } catch (IOException ex) {
                 Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
                 exit();
             }
         }
-        txtNhanTin.setText("");
+        message.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        LoginChat li;
         try {
-            li = new LoginChat();
-            li.setVisible(true);
-            li.pack();
-            li.setLocationRelativeTo(null);
+            LoginChat loginChat = new LoginChat();
+            loginChat.setVisible(true);
+            loginChat.pack();
+            loginChat.setLocationRelativeTo(null);
             this.dispose();
         } catch (IOException ex) {
             Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -291,7 +288,7 @@ public class ChatInterface extends JFrame {
             @Override
             public void run() {
                 list = new UserDAO().getAllUsers();
-                txtTen.setText(name);
+                username.setText(name);
                 Display();
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());
@@ -302,7 +299,6 @@ public class ChatInterface extends JFrame {
                 }
 
                 while (true) {
-                    String str;
                     try {
                         dis = new DataInputStream(socket.getInputStream());
                         String message = dis.readUTF();
@@ -310,8 +306,8 @@ public class ChatInterface extends JFrame {
                         String cmd = tokenizer.nextToken();
                         switch (cmd) {
                             case "TinNhan":
-                                str = tokenizer.nextToken();
-                                txtHienThi.append(str + "\n");
+                                String str = tokenizer.nextToken();
+                                displayMessage.append(str + "\n");
 
                                 break;
                             case "Online_User":
@@ -319,14 +315,13 @@ public class ChatInterface extends JFrame {
                                 while (tokenizer.hasMoreElements()) {
                                     cmd = (String) tokenizer.nextElement();
                                     listModel.addElement(cmd);
-
                                 }
                                 listModel.removeElement(name);
-                                listOnline.setModel(listModel);
+                                listFriendOnlines.setModel(listModel);
                                 break;
                             case "Thoat":
                                 str = tokenizer.nextToken();
-                                txtHienThi.append("\t" + str + "\n");
+                                displayMessage.append("\t" + str + "\n");
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -362,11 +357,11 @@ public class ChatInterface extends JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JList<String> listBanBe;
-    private javax.swing.JList<String> listOnline;
-    private javax.swing.JTabbedPane txtBanBe;
-    private javax.swing.JTextArea txtHienThi;
-    private JTextField txtNhanTin;
-    private javax.swing.JLabel txtTen;
+    private javax.swing.JList<String> listFriends;
+    private javax.swing.JList<String> listFriendOnlines;
+    private javax.swing.JTabbedPane friend;
+    private javax.swing.JTextArea displayMessage;
+    private JTextField message;
+    private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

@@ -208,20 +208,12 @@ public class LoginChat extends JFrame {
         try {
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
-            boolean flag = true;
-            do {
-                sendData("KT_Login|" + username + "|" + password);
-                int result = dis.readInt();
-                if (result == 1) {
-                    ChatInterface chatInterface = new ChatInterface();
-                    ChatInterface.name = username;
-                    chatInterface.setVisible(true);
-                    chatInterface.setLocationRelativeTo(null);
-                    this.dispose();
-                    exit();
-                    flag = false;
-                }
-            } while (flag);
+            ChatInterface chatInterface = new ChatInterface();
+            ChatInterface.name = username;
+            chatInterface.setVisible(true);
+            chatInterface.setLocationRelativeTo(null);
+            this.dispose();
+            exit();
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(rootPane, "Disconnect to server!");
             Logger.getLogger(LoginChat.class.getName()).log(Level.SEVERE, null, ex);
