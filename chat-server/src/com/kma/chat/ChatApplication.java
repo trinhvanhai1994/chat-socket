@@ -31,7 +31,7 @@ public class ChatApplication {
         listUser = new Hashtable<>();
         while (true) {
             Socket socket = server.accept();
-            ThreadLogin login = new ThreadLogin(this, socket);
+            ThreadLogin login = new ThreadLogin(socket);
             login.start();
         }
     }

@@ -23,11 +23,10 @@ import java.util.logging.Logger;
 public class ThreadLogin extends Thread {
 
     private Socket socket;
-    private boolean flag = true;
     private DataInputStream dis = null;
     private DataOutputStream dos = null;
 
-    public ThreadLogin(ChatApplication server, Socket socket) {
+    public ThreadLogin(Socket socket) {
         this.socket = socket;
     }
 
@@ -92,27 +91,10 @@ public class ThreadLogin extends Thread {
                     case "Ten":
                         String name = tokenizer.nextToken();
                         ChatApplication.listUser.put(name, this);
-
-                        break;
-                    case "KT_Login":
-                        do {
-                            String username = tokenizer.nextToken();
-                            String password = tokenizer.nextToken();
-                            int results = new Authentication().checkLogin(username, password);
-                            if (results == 1) {
-                                dos.writeInt(1);
-                                ExitChat();
-                                flag = false;
-                            } else if (results == -1) {
-                                dos.writeInt(-1);
-                                flag = false;
-                            }
-                        } while (flag);
                         break;
                     case "TinNhan":
                         String str = tokenizer.nextToken();
                         sendMessage("TinNhan|" + str);
-
                         break;
                     case "Online_User":
                         sendAll();
@@ -125,7 +107,6 @@ public class ThreadLogin extends Thread {
                         sendAll();
                         break;
                 }
-
             } catch (Exception e) {
                 try {
                     dis.close();
