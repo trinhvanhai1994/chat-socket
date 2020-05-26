@@ -5,12 +5,14 @@
  */
 package View;
 
-import com.kma.chat.dao.UserInfo;
+import com.kma.chat.dao.UserDAO;
 import com.kma.chat.entity.User;
+import com.kma.chat.utils.DateUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -41,22 +43,22 @@ public class Registration extends JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        txtTen = new javax.swing.JTextField();
+        name = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txtNgaySinh = new javax.swing.JTextField();
-        txtus = new javax.swing.JTextField();
+        dayOfBirth = new javax.swing.JTextField();
+        username = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        txtpsNew = new javax.swing.JPasswordField();
-        txtpas = new javax.swing.JPasswordField();
+        passwordNew = new javax.swing.JPasswordField();
+        password = new javax.swing.JPasswordField();
         jLabel9 = new javax.swing.JLabel();
-        rbNam = new javax.swing.JRadioButton();
-        rbNu = new javax.swing.JRadioButton();
-        txtloi = new javax.swing.JLabel();
-        txtphone = new javax.swing.JTextField();
+        male = new javax.swing.JRadioButton();
+        female = new javax.swing.JRadioButton();
+        error = new javax.swing.JLabel();
+        phone = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -74,8 +76,8 @@ public class Registration extends JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Tên :");
 
-        txtTen.setBackground(new java.awt.Color(0, 51, 102));
-        txtTen.setForeground(new java.awt.Color(255, 255, 255));
+        name.setBackground(new java.awt.Color(0, 51, 102));
+        name.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,11 +95,11 @@ public class Registration extends JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Retype Pass :");
 
-        txtNgaySinh.setBackground(new java.awt.Color(0, 51, 102));
-        txtNgaySinh.setForeground(new java.awt.Color(255, 255, 255));
+        dayOfBirth.setBackground(new java.awt.Color(0, 51, 102));
+        dayOfBirth.setForeground(new java.awt.Color(255, 255, 255));
 
-        txtus.setBackground(new java.awt.Color(0, 51, 102));
-        txtus.setForeground(new java.awt.Color(255, 255, 255));
+        username.setBackground(new java.awt.Color(0, 51, 102));
+        username.setForeground(new java.awt.Color(255, 255, 255));
 
         jButton1.setBackground(new java.awt.Color(255, 51, 51));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -119,12 +121,12 @@ public class Registration extends JFrame {
             }
         });
 
-        txtpsNew.setBackground(new java.awt.Color(0, 51, 102));
-        txtpsNew.setForeground(new java.awt.Color(255, 255, 255));
+        passwordNew.setBackground(new java.awt.Color(0, 51, 102));
+        passwordNew.setForeground(new java.awt.Color(255, 255, 255));
 
-        txtpas.setBackground(new java.awt.Color(0, 51, 102));
-        txtpas.setForeground(new java.awt.Color(255, 255, 255));
-        txtpas.addActionListener(new java.awt.event.ActionListener() {
+        password.setBackground(new java.awt.Color(0, 51, 102));
+        password.setForeground(new java.awt.Color(255, 255, 255));
+        password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtpasActionPerformed(evt);
             }
@@ -134,21 +136,21 @@ public class Registration extends JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Giới Tính :");
 
-        rbNam.setBackground(new java.awt.Color(0, 51, 102));
-        buttonGroup1.add(rbNam);
-        rbNam.setForeground(new java.awt.Color(255, 255, 255));
-        rbNam.setText("Nam");
+        male.setBackground(new java.awt.Color(0, 51, 102));
+        buttonGroup1.add(male);
+        male.setForeground(new java.awt.Color(255, 255, 255));
+        male.setText("Nam");
 
-        rbNu.setBackground(new java.awt.Color(0, 51, 102));
-        buttonGroup1.add(rbNu);
-        rbNu.setForeground(new java.awt.Color(255, 255, 255));
-        rbNu.setText("Nữ");
+        female.setBackground(new java.awt.Color(0, 51, 102));
+        buttonGroup1.add(female);
+        female.setForeground(new java.awt.Color(255, 255, 255));
+        female.setText("Nữ");
 
-        txtloi.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
-        txtloi.setForeground(new java.awt.Color(255, 51, 51));
+        error.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        error.setForeground(new java.awt.Color(255, 51, 51));
 
-        txtphone.setBackground(new java.awt.Color(0, 51, 102));
-        txtphone.setForeground(new java.awt.Color(255, 255, 255));
+        phone.setBackground(new java.awt.Color(0, 51, 102));
+        phone.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -178,8 +180,8 @@ public class Registration extends JFrame {
                                                                         .addComponent(jLabel5))
                                                                 .addGap(28, 28, 28)
                                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                        .addComponent(txtNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                        .addComponent(dayOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                                 .addGap(22, 22, 22)
                                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -189,21 +191,21 @@ public class Registration extends JFrame {
                                                                         .addComponent(jLabel8))
                                                                 .addGap(24, 24, 24)
                                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                        .addComponent(txtus, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(txtphone, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(txtpas, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(txtpsNew, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(passwordNew, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                                 .addGap(68, 68, 68)
-                                                .addComponent(txtloi, javax.swing.GroupLayout.DEFAULT_SIZE, 9, Short.MAX_VALUE))
+                                                .addComponent(error, javax.swing.GroupLayout.DEFAULT_SIZE, 9, Short.MAX_VALUE))
                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                                 .addGap(47, 47, 47)
                                                                 .addComponent(jLabel9)
                                                                 .addGap(27, 27, 27)
-                                                                .addComponent(rbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(male, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(18, 18, 18)
-                                                                .addComponent(rbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addComponent(female, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                                 .addGap(62, 62, 62)
                                                                 .addComponent(jButton1)
@@ -220,36 +222,36 @@ public class Registration extends JFrame {
                                 .addGap(25, 25, 25)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel4)
-                                        .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(12, 12, 12)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel5)
-                                        .addComponent(txtNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dayOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(9, 9, 9)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(rbNam)
-                                        .addComponent(rbNu)
+                                        .addComponent(male)
+                                        .addComponent(female)
                                         .addComponent(jLabel9))
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                 .addGap(47, 47, 47)
-                                                .addComponent(txtloi, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(txtphone, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(phone, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel12))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(txtus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel7))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(txtpas, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                                                        .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                                                         .addComponent(jLabel6))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(txtpsNew, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(passwordNew, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel8))
                                                 .addGap(38, 38, 38)
                                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -348,38 +350,30 @@ public class Registration extends JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (checkInput()) {
             try {
-                User user = new User(txtus.getText(), String.valueOf(txtpas.getPassword()), txtTen.getText(), rbNam.isSelected() ? "Nam" : "Nữ", Integer.parseInt(txtphone.getText()),
-                        new SimpleDateFormat("dd-mm-yyyy").parse(txtNgaySinh.getText()));
+                Date dayOfBirthInput = DateUtils.convertStringToDate(dayOfBirth.getText());
+                String genderInput = male.isSelected() ? "Male" : "Female";
+                int phoneInput = Integer.parseInt(phone.getText());
+                String passwordInput = String.valueOf(password.getPassword());
+                String usernameInput = username.getText();
+                String nameInput = name.getText();
 
-                if (checkDuplicateUsername(user.getUsername())) {
-                    JOptionPane.showMessageDialog(rootPane, "Username đã tồn tại!");
-                } else if (String.valueOf(txtpsNew.getPassword()).equals(String.valueOf(txtpas.getPassword()))) {
-                    new UserInfo().Registration(user);
-                    JOptionPane.showMessageDialog(rootPane, "Tạo Thành Công Về Đăng Nhập");
-                    LoginChat login;
-                    try {
-                        login = new LoginChat();
-                        login.setVisible(true);
-                        login.pack();
-                        login.setLocationRelativeTo(null);
-                        login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        this.dispose();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Password Không Trùng Nhau");
-                }
-
-            } catch (ParseException ex) {
+                User user = new User(usernameInput, passwordInput, nameInput, genderInput, phoneInput, dayOfBirthInput);
+                new UserDAO().Registration(user);
+                JOptionPane.showMessageDialog(rootPane, "Tạo Thành Công Về Đăng Nhập");
+                LoginChat login = new LoginChat();
+                login.setVisible(true);
+                login.pack();
+                login.setLocationRelativeTo(null);
+                login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                this.dispose();
+            } catch (Exception ex) {
                 Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private boolean checkDuplicateUsername(String username) {
-        User userLocal = new UserInfo().getUserByUsername(username);
+        User userLocal = new UserDAO().getUserByUsername(username);
         if (userLocal == null) return false;
         return userLocal.getUsername().equals(username);
     }
@@ -389,12 +383,12 @@ public class Registration extends JFrame {
     }//GEN-LAST:event_txtpasActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        txtNgaySinh.setText("");
-        txtTen.setText("");
-        txtpas.setText("");
-        txtphone.setText("");
-        txtpsNew.setText("");
-        txtus.setText("");
+        dayOfBirth.setText("");
+        name.setText("");
+        password.setText("");
+        phone.setText("");
+        passwordNew.setText("");
+        username.setText("");
         buttonGroup1.clearSelection();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -407,20 +401,40 @@ public class Registration extends JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     public boolean checkInput() {
-        if (txtTen.getText().equals("")) {
+        if (name.getText().equals("")) {
             JOptionPane.showConfirmDialog(rootPane, "Nhập Tên");
             return false;
-        } else if (txtNgaySinh.getText().equals("")) {
+        }
+        if (dayOfBirth.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Nhập Ngày Sinh");
             return false;
-        } else if (txtphone.getText().equals("")) {
+        }
+        if (DateUtils.convertStringToDate(dayOfBirth.getText()) == null) {
+            JOptionPane.showMessageDialog(rootPane, "Ngày sinh không hợp lệ!");
+            return false;
+        }
+        if (username.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Nhập Username");
+            return false;
+        }
+        if (checkDuplicateUsername(username.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "Username đã tồn tại!");
+            return false;
+        }
+        if (phone.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Nhập Số Điện Thoại");
             return false;
-        } else if (String.valueOf(txtpsNew.getPassword()).equals("")) {
-            JOptionPane.showMessageDialog(rootPane, "Nhập PassWord");
+        }
+        if (String.valueOf(passwordNew.getPassword()).equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Nhập Password");
             return false;
-        } else if (String.valueOf(txtpas.getPassword()).equals("")) {
-            JOptionPane.showMessageDialog(rootPane, "Nhập PassWord");
+        }
+        if (String.valueOf(password.getPassword()).equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Nhập Password");
+            return false;
+        }
+        if (!String.valueOf(passwordNew.getPassword()).equals(String.valueOf(password.getPassword()))) {
+            JOptionPane.showMessageDialog(rootPane, "Password Không Trùng Nhau");
             return false;
         }
         return true;
@@ -473,14 +487,14 @@ public class Registration extends JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton rbNam;
-    private javax.swing.JRadioButton rbNu;
-    private javax.swing.JTextField txtNgaySinh;
-    private javax.swing.JTextField txtTen;
-    private javax.swing.JLabel txtloi;
-    private javax.swing.JPasswordField txtpas;
-    private javax.swing.JTextField txtphone;
-    private javax.swing.JPasswordField txtpsNew;
-    private javax.swing.JTextField txtus;
+    private javax.swing.JRadioButton male;
+    private javax.swing.JRadioButton female;
+    private javax.swing.JTextField dayOfBirth;
+    private javax.swing.JTextField name;
+    private javax.swing.JLabel error;
+    private javax.swing.JPasswordField password;
+    private javax.swing.JTextField phone;
+    private javax.swing.JPasswordField passwordNew;
+    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

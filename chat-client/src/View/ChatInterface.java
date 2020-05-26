@@ -5,7 +5,7 @@
  */
 package View;
 
-import com.kma.chat.dao.UserInfo;
+import com.kma.chat.dao.UserDAO;
 import com.kma.chat.entity.User;
 
 import java.awt.event.WindowAdapter;
@@ -45,7 +45,6 @@ public class ChatInterface extends JFrame {
             socket = new Socket("localhost", 3333);
             ExitChat();
             data();
-
         } catch (IOException ex) {
             Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -291,7 +290,7 @@ public class ChatInterface extends JFrame {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                list = new UserInfo().getAllUsers();
+                list = new UserDAO().getAllUsers();
                 txtTen.setText(name);
                 Display();
                 try {

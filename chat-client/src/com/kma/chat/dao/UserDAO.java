@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @author Dieu Huong
  */
-public class UserInfo {
+public class UserDAO {
     private final Connection con = ConnectDatabase.connect();
 
     public void Registration(User user) {
@@ -36,6 +36,23 @@ public class UserInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int checkLogin(String username, String password) {
+        Connection connection = ConnectDatabase.connect();
+        String checkLoginQuery = "select count(*) as userTotal from user where username = ? and password = ? limit 1";
+        try {
+            PreparedStatement ps = connection.prepareStatement(checkLoginQuery);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("userTotal");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public User getUserByUsername(String username) {
@@ -60,7 +77,7 @@ public class UserInfo {
             PreparedStatement ps = con.prepareStatement(str);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                User user = new User(rs.getString(1));
+                User user = new User(rs.getString(2));
                 list.add(user);
             }
         } catch (Exception e) {

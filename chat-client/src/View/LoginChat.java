@@ -5,6 +5,8 @@
  */
 package View;
 
+import com.kma.chat.dao.UserDAO;
+
 import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,9 +24,13 @@ public class LoginChat extends JFrame {
     private DataOutputStream dos = null;
 
     public LoginChat() throws IOException {
-        initComponents();
-        setLocationRelativeTo(this);
-        socket = new Socket("localhost", 3333);
+        try {
+            initComponents();
+            setLocationRelativeTo(this);
+            socket = new Socket("localhost", 3333);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Connect server failed!");
+        }
     }
 
     /**
@@ -42,8 +48,8 @@ public class LoginChat extends JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtUs = new JTextField();
-        txtPs = new javax.swing.JPasswordField();
+        username = new JTextField();
+        password = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabelNewAccuont = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -91,14 +97,14 @@ public class LoginChat extends JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Password :");
 
-        txtUs.setBackground(new java.awt.Color(0, 51, 102));
-        txtUs.setForeground(new java.awt.Color(255, 255, 255));
-        txtUs.setMinimumSize(new java.awt.Dimension(6, 25));
-        txtUs.setPreferredSize(new java.awt.Dimension(6, 25));
+        username.setBackground(new java.awt.Color(0, 51, 102));
+        username.setForeground(new java.awt.Color(255, 255, 255));
+        username.setMinimumSize(new java.awt.Dimension(6, 25));
+        username.setPreferredSize(new java.awt.Dimension(6, 25));
 
-        txtPs.setBackground(new java.awt.Color(0, 51, 102));
-        txtPs.setForeground(new java.awt.Color(255, 255, 255));
-        txtPs.setPreferredSize(new java.awt.Dimension(6, 25));
+        password.setBackground(new java.awt.Color(0, 51, 102));
+        password.setForeground(new java.awt.Color(255, 255, 255));
+        password.setPreferredSize(new java.awt.Dimension(6, 25));
 
         jButton1.setBackground(new java.awt.Color(0, 102, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -136,8 +142,8 @@ public class LoginChat extends JFrame {
                                                 .addComponent(jLabel5)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtUs, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                                        .addComponent(txtPs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                                        .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGap(58, 58, 58)
                                                 .addComponent(jButton1)))
@@ -161,10 +167,10 @@ public class LoginChat extends JFrame {
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGap(8, 8, 8)
                                                 .addComponent(jLabel4))
-                                        .addComponent(txtUs, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(txtPs, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel5))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton1)
@@ -196,13 +202,13 @@ public class LoginChat extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String password = String.valueOf(txtPs.getPassword());
-        String username = txtUs.getText();
+        String password = String.valueOf(this.password.getPassword());
+        String username = this.username.getText();
+        if (invalidLogin(username, password)) return;
         try {
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
             boolean flag = true;
-
             do {
                 sendData("KT_Login|" + username + "|" + password);
                 int result = dis.readInt();
@@ -214,23 +220,28 @@ public class LoginChat extends JFrame {
                     this.dispose();
                     exit();
                     flag = false;
-
-                } else if (result == -1) {
-                    JOptionPane.showMessageDialog(rootPane, "Mật khẩu không chính xác !");
-                    reset();
-                    flag = false;
-                } else if (result == -2) {
-                    JOptionPane.showMessageDialog(rootPane, "Tài Khoản Không Tồn Tại!");
-                    reset();
-                    flag = false;
                 }
             } while (flag);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(rootPane, "username or password không chính xác !");
-            reset();
+            JOptionPane.showMessageDialog(rootPane, "Disconnect to server!");
             Logger.getLogger(LoginChat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private boolean invalidLogin(String username, String password) {
+        int userTotal = new UserDAO().checkLogin(username, password);
+        if (userTotal == 0) {
+            JOptionPane.showMessageDialog(rootPane, "username or password invalid! try again.");
+            reset();
+            return true;
+        }
+        if (userTotal == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Disconnect to server!");
+            reset();
+            return true;
+        }
+        return false;
+    }
 
     private void jLabelNewAcountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNewAccuontMouseClicked
 
@@ -243,7 +254,7 @@ public class LoginChat extends JFrame {
     }//GEN-LAST:event_jLabelNewAccuontMouseClicked
 
     public void reset() {
-        txtPs.setText("");
+        password.setText("");
     }
 
     public void exit() {
@@ -310,7 +321,7 @@ public class LoginChat extends JFrame {
     private javax.swing.JLabel jLabelNewAccuont;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField txtPs;
-    private JTextField txtUs;
+    private javax.swing.JPasswordField password;
+    private JTextField username;
     // End of variables declaration//GEN-END:variables
 }
