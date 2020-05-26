@@ -106,9 +106,6 @@ public class ThreadLogin extends Thread {
                             } else if (results == -1) {
                                 dos.writeInt(-1);
                                 flag = false;
-                            } else if (results == -2) {
-                                dos.writeInt(-2);
-                                flag = false;
                             }
                         } while (flag);
                         break;
