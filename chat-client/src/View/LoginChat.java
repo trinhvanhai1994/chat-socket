@@ -6,12 +6,14 @@
 package View;
 
 import com.kma.chat.dao.UserDAO;
+import com.kma.chat.entity.User;
 
 import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -221,14 +223,16 @@ public class LoginChat extends JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private boolean invalidLogin(String username, String password) {
-        int userTotal = new UserDAO().checkLogin(username, password);
-        if (userTotal == 0) {
-            JOptionPane.showMessageDialog(rootPane, "username or password invalid! try again.");
+        User userLocal = new UserDAO().getUserByUsername(username);
+        if (userLocal == null) {
+            JOptionPane.showMessageDialog(rootPane, "Username không tồn tại");
             reset();
             return true;
         }
-        if (userTotal == -1) {
-            JOptionPane.showMessageDialog(rootPane, "Disconnect to server!");
+        byte[] decodePassword = Base64.getDecoder().decode(userLocal.getPassword());
+        String passwordLocal = new String(decodePassword);
+        if (!passwordLocal.equals(password)) {
+            JOptionPane.showMessageDialog(rootPane, "Password sai!");
             reset();
             return true;
         }
@@ -236,12 +240,11 @@ public class LoginChat extends JFrame {
     }
 
     private void jLabelNewAcountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNewAccuontMouseClicked
-
-        Registration dk = new Registration();
-        dk.setVisible(true);
-        dk.pack();
-        dk.setLocationRelativeTo(null);
-        dk.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Registration registration = new Registration();
+        registration.setVisible(true);
+        registration.pack();
+        registration.setLocationRelativeTo(null);
+        registration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.dispose();
     }//GEN-LAST:event_jLabelNewAccuontMouseClicked
 
@@ -256,16 +259,6 @@ public class LoginChat extends JFrame {
             socket.close();
         } catch (IOException ex) {
             Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public void sendData(String mess) {
-        try {
-            dos = new DataOutputStream(socket.getOutputStream());
-            dos.writeUTF(mess);
-        } catch (IOException ex) {
-            Logger.getLogger(LoginChat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

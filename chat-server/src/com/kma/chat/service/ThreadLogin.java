@@ -6,7 +6,6 @@
 package com.kma.chat.service;
 
 import com.kma.chat.ChatApplication;
-import com.kma.chat.dao.Authentication;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -42,7 +41,6 @@ public class ThreadLogin extends Thread {
         try {
             dos = new DataOutputStream(socket.getOutputStream());
             dos.writeUTF(mess);
-
         } catch (IOException ex) {
             Logger.getLogger(ThreadLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -52,7 +50,6 @@ public class ThreadLogin extends Thread {
     public String getAllName() {
         Enumeration e = ChatApplication.listUser.keys();
         String name = "";
-
         while (e.hasMoreElements()) {
             name += e.nextElement() + "|";
         }

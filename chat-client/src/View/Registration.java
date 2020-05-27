@@ -12,6 +12,7 @@ import com.kma.chat.utils.DateUtils;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -353,11 +354,13 @@ public class Registration extends JFrame {
             Date dayOfBirthInput = DateUtils.convertStringToDate(dayOfBirth.getText());
             String genderInput = male.isSelected() ? "Male" : "Female";
             int phoneInput = Integer.parseInt(phone.getText());
-            String passwordInput = String.valueOf(password.getPassword());
             String usernameInput = username.getText();
             String nameInput = name.getText();
 
-            User user = new User(usernameInput, passwordInput, nameInput, genderInput, phoneInput, dayOfBirthInput);
+            String passwordInput = String.valueOf(password.getPassword());
+            String encodePassword = Base64.getEncoder().encodeToString(passwordInput.getBytes());
+
+            User user = new User(usernameInput, encodePassword, nameInput, genderInput, phoneInput, dayOfBirthInput);
             new UserDAO().Registration(user);
             JOptionPane.showMessageDialog(rootPane, "Tạo Thành Công Về Đăng Nhập");
             LoginChat login = new LoginChat();

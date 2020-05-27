@@ -38,23 +38,6 @@ public class UserDAO {
         }
     }
 
-    public int checkLogin(String username, String password) {
-        Connection connection = ConnectDatabase.connect();
-        String checkLoginQuery = "select count(*) as userTotal from user where username = ? and password = ? limit 1";
-        try {
-            PreparedStatement ps = connection.prepareStatement(checkLoginQuery);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("userTotal");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
     public User getUserByUsername(String username) {
         String query = "select * from user where username = ?";
         try {
@@ -62,7 +45,7 @@ public class UserDAO {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                return new User(rs.getString(1));
+                return new User(rs.getString(1), rs.getString(2));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,7 +60,7 @@ public class UserDAO {
             PreparedStatement ps = con.prepareStatement(str);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                User user = new User(rs.getString(2));
+                User user = new User(rs.getString(1));
                 list.add(user);
             }
         } catch (Exception e) {
