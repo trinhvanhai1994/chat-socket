@@ -26,30 +26,29 @@ import javax.swing.JTextField;
 /**
  * @author Dieu Huong
  */
-public class ChatInterface extends JFrame {
+public class ChatRoom extends JFrame {
     private Socket socket;
     private DataInputStream dis = null;
     private DataOutputStream dos = null;
     static String name = "";
-    private StringTokenizer tokenizer;
     DefaultListModel<String> listModel, listBan;
     List<User> list;
 
-    public ChatInterface() {
+    public ChatRoom() {
         initComponents();
         listModel = new DefaultListModel<>();
         listBan = new DefaultListModel<>();
 
         try {
-            socket = new Socket("localhost", 3333);
+            socket = new Socket("localhost", 3333); // Thực hiện kết nối với server
             ExitChat();
             data();
         } catch (IOException ex) {
-            Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void Display() {
+    public void display() {
         listBan.clear();
         for (User user : list) {
             String username = user.getUsername();
@@ -72,7 +71,7 @@ public class ChatInterface extends JFrame {
 
                         System.exit(0);
                     } catch (IOException ex) {
-                        Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -257,29 +256,29 @@ public class ChatInterface extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!"".equals(message.getText())) {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) { //Khi nhấn vào nút gửi tin nhắn
+        if (!"".equals(message.getText())) { // check có viết tin nhắn k
             try {
-                dos = new DataOutputStream(socket.getOutputStream());
-                dos.writeUTF("TinNhan|" + name + " : " + message.getText());
+                dos = new DataOutputStream(socket.getOutputStream()); // Mở cổng gửi data
+                dos.writeUTF("TinNhan|" + name + " : " + message.getText()); // Thực hiện gửi dữ liệu
                 dos.flush();
             } catch (IOException ex) {
-                Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
                 exit();
             }
         }
         message.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// Nhấn vào nút thoát
         try {
             LoginChat loginChat = new LoginChat();
-            loginChat.setVisible(true);
+            loginChat.setVisible(true); // Thoát khỏi room chat và mở màn hình đăng nhập
             loginChat.pack();
             loginChat.setLocationRelativeTo(null);
             this.dispose();
         } catch (IOException ex) {
-            Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -289,42 +288,43 @@ public class ChatInterface extends JFrame {
             public void run() {
                 list = new UserDAO().getAllUsers();
                 username.setText(name);
-                Display();
+                display();
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());
                     dos.writeUTF("Ten|" + name);
                     dos.writeUTF("Online_User|");
                 } catch (IOException ex) {
-                    Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 while (true) {
                     try {
-                        dis = new DataInputStream(socket.getInputStream());
-                        String message = dis.readUTF();
-                        tokenizer = new StringTokenizer(message, "|");
-                        String cmd = tokenizer.nextToken();
-                        switch (cmd) {
-                            case "TinNhan":
-                                String str = tokenizer.nextToken();
-                                displayMessage.append(str + "\n");
+                        dis = new DataInputStream(socket.getInputStream()); // Mở cổng lấy data
+                        String message = dis.readUTF(); // Lấy data
+                        StringTokenizer tokenizer = new StringTokenizer(message, "|"); // Cắt ra thành các chuỗi được ngăn cách bằng kí tự "|"
+                        String action = tokenizer.nextToken(); // Lấy ra chuỗi String (TinNhan hoặc Online_User...)
+                        String username = "";
+                        switch (action) {
+                            case "TinNhan": //Khi nhấn nút gửi tin nhắn
+                                username = tokenizer.nextToken(); //Tên người gửi tin nhắn
+                                displayMessage.append(username + "\n"); // thêm tin nhắn vào màn hình hiển thị tin nhắn
 
                                 break;
                             case "Online_User":
                                 listModel.clear();
-                                while (tokenizer.hasMoreElements()) {
-                                    cmd = (String) tokenizer.nextElement();
-                                    listModel.addElement(cmd);
+                                while (tokenizer.hasMoreElements()) { //Lặp lại cho đến khi hết users
+                                    username = (String) tokenizer.nextElement(); //Lấy ra username
+                                    listModel.addElement(username); //Thêm vào listModel
                                 }
-                                listModel.removeElement(name);
-                                listFriendOnlines.setModel(listModel);
+                                listModel.removeElement(name); // Xóa tên của mình khỏi danh sách user online được hiển thị
+                                listFriendOnlines.setModel(listModel); //Hiển thị danh sách bạn bè đang online ra giao diện
                                 break;
                             case "Thoat":
-                                str = tokenizer.nextToken();
-                                displayMessage.append("\t" + str + "\n");
+                                username = tokenizer.nextToken(); // Tên người thoát room
+                                displayMessage.append("\t" + username + "\n"); // Hiển thị thông tin người thoát room trên màn hình hiển thị tin nhắn
                         }
                     } catch (IOException ex) {
-                        Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
                         exit();
                     } catch (Exception e) {
                         exit();
@@ -341,7 +341,7 @@ public class ChatInterface extends JFrame {
             dos.close();
             socket.close();
         } catch (IOException ex) {
-            Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

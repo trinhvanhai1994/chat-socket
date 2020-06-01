@@ -5,7 +5,7 @@
  */
 package com.kma.chat;
 
-import com.kma.chat.service.ThreadLogin;
+import com.kma.chat.service.ThreadChatRoom;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,28 +18,23 @@ import java.util.logging.Logger;
  * @author Dieu Huong
  */
 public class ChatApplication {
-    private int port;
-    public static Hashtable<String, ThreadLogin> listUser;
-
-    public ChatApplication(int port) {
-        this.port = port;
-    }
+    public static Hashtable<String, ThreadChatRoom> listUser;
 
     public void execute() throws IOException {
-        ServerSocket server = new ServerSocket(port);
+        ServerSocket server = new ServerSocket(3333); // Mở kết nối socket với port 3333
         System.out.println("doi client ....");
         listUser = new Hashtable<>();
         while (true) {
-            Socket socket = server.accept();
-            ThreadLogin login = new ThreadLogin(socket);
-            login.start();
+            Socket socket = server.accept(); //Tạo socket cho kết nối mới
+            ThreadChatRoom login = new ThreadChatRoom(socket);
+            login.start(); // Bắt đầu
         }
     }
 
     public static void main(String[] args) {
-        ChatApplication sv = new ChatApplication(3333);
+        ChatApplication application = new ChatApplication();
         try {
-            sv.execute();
+            application.execute();
         } catch (IOException ex) {
             Logger.getLogger(ChatApplication.class.getName()).log(Level.SEVERE, null, ex);
         }

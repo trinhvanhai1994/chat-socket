@@ -210,10 +210,10 @@ public class LoginChat extends JFrame {
         try {
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
-            ChatInterface chatInterface = new ChatInterface();
-            ChatInterface.name = username;
-            chatInterface.setVisible(true);
-            chatInterface.setLocationRelativeTo(null);
+            ChatRoom chatRoom = new ChatRoom();
+            ChatRoom.name = username;
+            chatRoom.setVisible(true);
+            chatRoom.setLocationRelativeTo(null);
             this.dispose();
             exit();
         } catch (IOException ex) {
@@ -258,7 +258,7 @@ public class LoginChat extends JFrame {
             dos.close();
             socket.close();
         } catch (IOException ex) {
-            Logger.getLogger(ChatInterface.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChatRoom.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
